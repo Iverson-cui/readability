@@ -1,0 +1,44 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <math.h>
+
+float level(string sentences);
+
+int main(void)
+{
+    string sentences = get_string("type in sentences\n");
+    int a = roundf(level(sentences));
+    if(a > 16){
+        printf("Grade 16+\n");
+    }
+    else if(a < 1){
+        printf("Before grade 1\n");
+    }
+    else{
+        printf("Grade %i\n", a);
+    }
+}
+
+float level(string sentences){
+    int letters = 0;
+    int words = 1;
+    int sentence = 0;
+    int length = strlen(sentences);
+    for(int i = 0; i < length; i++){   // calculate letters
+        if( isupper(sentences[i]) || islower(sentences[i]) ){
+            letters++;
+        }
+        else if( (sentences[i] == 46) || (sentences[i] == 33) || (sentences[i] == 63) ){   // calculate sentences
+            sentence++;
+        }
+        else if(sentences[i] == 32){    //calculate words
+            words++;
+        }
+    }
+    float L = ((float)letters / words) * 100;
+    float S = ((float)sentence / words) * 100;
+    //printf("Letters: %d, Words: %d, sentences: %d\n, number = %f,L is %f, S is %f",letters,words,sentence,(0.0588 * L - 0.296 * S - 15.8),L,S);
+    return (0.0588 * L - 0.296 * S - 15.8);
+}
